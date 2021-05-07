@@ -1,0 +1,13 @@
+@import "variables";
+
+.collection {
+   position: relative;
+   display: flex;
+   flex-wrap: wrap;
+   align-items: stretch;
+   justify-content: space-between;
+   &__image {
+      width: 40vw;
+      max-width: 32%;
+   }
+}

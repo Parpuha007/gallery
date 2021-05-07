@@ -1,0 +1,65 @@
+@import "variables";
+
+.upload {
+   padding-top: 20px;
+   &__row {
+      display: flex;
+      margin-bottom: 20px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+   }
+   &__url-input {
+      height: $common-height;
+      width: 70vw;
+      max-width: $max-input-width;
+      border-radius: 5px;
+      border: 1px solid $grey-color;
+      box-sizing: border-box;
+      outline: none;
+      transition: .3s;
+      text-indent: 15px;
+      margin-right: 20px;
+
+      &:focus {
+         border-color: $grey-focus-color;
+      }
+   }
+   &__url-btn {
+      background-color: $green-color;
+      border: none;
+      color: #fff;
+      height: $common-height;
+      border-radius: 5px;
+      width: 25vw;
+      max-width: $max-button-width;
+      cursor: pointer;
+      transition: .3s;
+
+      &:hover {
+         background-color: $green-focus-color;
+      }
+
+   }
+   &__local-label {
+      background-color: $green-color;
+      border: none;
+      color: #fff;
+      height: $common-height;
+      width: 35vw;
+      max-width: $max-button-width;
+      transition: .3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      margin-left: 20px;
+      text-align: center;
+      &:hover {
+         background-color: $green-focus-color;
+      }
+   }
+   &__local-input {
+      display: none;
+   }
+}
