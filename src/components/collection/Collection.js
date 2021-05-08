@@ -1,4 +1,5 @@
 import { GalleryComponent } from "../../core/GalleryComponent";
+import { fadeOut } from "../../core/utils";
 
 export class Collection extends GalleryComponent {
    static className = 'collection'
@@ -6,14 +7,16 @@ export class Collection extends GalleryComponent {
    constructor($root) {
       super($root, {
          name: 'Collection',
-         listeners: []
+         listeners: ['click']
       })
    }
    toHTML() {
-      return ``
+      return `<ul class="collection__list" id="list"></ul>`
    }
-
    onClick(event) {
-      console.log(event.target)
+      if (event.target.className === 'collection__image-close') {
+         const li = event.target.closest('.collection__image')
+         fadeOut(li)
+      }
    }
 }

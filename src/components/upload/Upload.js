@@ -1,5 +1,6 @@
 import { GalleryComponent } from "../../core/GalleryComponent";
-import { addImage, checkURI, getUrlsFromJSON, isJSON } from "../../core/utils";
+import { GalleryImage } from "../../core/Image";
+import { checkURI, getUrlsFromJSON, isJSON, isImage, hasHttps, readFile } from "../../core/utils";
 
 export class Upload extends GalleryComponent {
    static className = 'upload'
@@ -7,7 +8,7 @@ export class Upload extends GalleryComponent {
    constructor($root) {
       super($root, {
          name: 'Upload',
-         listeners: ['click']
+         listeners: ['click', 'change']
       })
    }
    toHTML() {
@@ -18,24 +19,43 @@ export class Upload extends GalleryComponent {
       <div class="upload__row">
          <span>или</span>
          <label class="upload__local-label" for="input-file">Выберите файл</label>
-         <input type="file" id="input-file" class="upload__local-input">
+         <input type="file" id="input-file" class="upload__local-input" multiple>
       </div>`
    }
 
    onClick(event) {
       if (event.target.id === 'btn') {
-         const collection = document.getElementById('collection')
-         const input = document.getElementById('input')
-         if (input.value) {
-            if (isJSON(input.value)) {
-               getUrlsFromJSON(input.value)
-            } else {
-               checkURI(input.value)
-                  .then(status => {
-                     addImage(status, input.value)
-                  })
-            }
-         }
+         let path = document.getElementById('input').value
+         if (path) {
+            path = hasHttps(path)
+            // debugger            
+            checkURI(path).then(response => {
+               if (response.status === 200) {
+                  if(isJSON(path)) {
+                     getUrlsFromJSON(path).then((array) => {
+                        array.map(el => {
+                           const image = new GalleryImage(el)
+                           checkURI(image.path).then(response => {
+                              image.decision(response)
+                           })
+                        })
+                     })
+                  } else if (isImage(path)) {
+                     const image = new GalleryImage(path)
+                     checkURI(image.path).then(status => {
+                        image.decision(status)
+                     })
+                  }
+               }
+            }).catch(er => {
+               console.error(er)
+            })
+         } else alert('Введите адрес в строку!')
+      }
+   }
+   onChange(event) {
+      if (event.target.id === 'input-file') {
+         readFile(event.target.files)
       }
    }
 }
